@@ -1,10 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "server": "nodemon server.js",
-    "start": "node server.js"
+    "server": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,12 +14,18 @@
   "dependencies": {
     "axios": "^1.18.1",
     "bcryptjs": "^3.0.3",
+    "connect-mongo": "^6.0.0",
     "cors": "^2.8.6",
+    "crypto": "^1.0.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
     "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
+    "mailgen": "^2.0.36",
     "mongoose": "^9.8.0",
+    "nodemailer": "^9.0.3",
     "openai": "^7.0.0",
     "stripe": "^22.3.2",
     "svix": "^1.99.1"

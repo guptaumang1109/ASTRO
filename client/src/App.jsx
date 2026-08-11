@@ -1,51 +1,69 @@
-import React, { useState } from 'react'
-import Sidebar from './components/Sidebar'
-import { Route ,Routes, useLocation } from 'react-router-dom'
-import ChatBox from './components/ChatBox'
-import Credits from './pages/Credits'
-import Community from './pages/Community'
-import { assets } from './assets/assets'
-import './assets/prism.css'
-import Loading from './pages/Loading'
-import { useAppContext } from './context/AppContext'
-import Login from './pages/Login'
+import { useState } from 'react';
+import Sidebar from './components/Sidebar';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import ChatBox from './components/ChatBox';
+import Credits from './pages/Credits';
+import Community from './pages/Community';
+import ResetPassword from './pages/ResetPassword';
+import { assets } from './assets/assets';
+import './assets/prism.css';
+import Loading from './pages/Loading';
+import Loader from './components/Loader';
+import { useAppContext } from './context/AppContext';
+import Login from './pages/Login';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
+  const { user, loadingUser } = useAppContext();
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const { pathname } = useLocation();
 
-  const {user} = useAppContext();
+  if (pathname === '/loading') return <Loading />;
+  if (loadingUser) return <Loader />;
 
-  const [isMenuOpen , setIsMenuOpen] = useState(true);
-  const {pathname} = useLocation();
-
-  if(pathname === '/loading') return <Loading/>
+  if (pathname.startsWith('/reset-password/')) {
+    return (
+      <>
+        <Toaster />
+        <Routes>
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+        </Routes>
+      </>
+    );
+  }
 
   return (
     <>
-    {!isMenuOpen && <img src = {assets.menu_icon} className='absolute top-3 left-3 
-    w-8 h-8 cursor-pointer md:hidden not-dark:invert z-10' onClick={() => setIsMenuOpen(true)} />}
+      <Toaster />
+      {!isMenuOpen && (
+        <img
+          src={assets.menu_icon}
+          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden not-dark:invert z-10"
+          onClick={() => setIsMenuOpen(true)}
+          alt="menu"
+        />
+      )}
 
-    {user ? (
-      <div className='dark:bg-gradient-to-b from-[#242124] to-[#000000]
-    dark:text-white'>
-      <div className='flex h-screen w-screen'>
-      <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>
-      <Routes>
-        <Route path='/' element={<ChatBox/>}></Route>
-        <Route path='/credits' element={<Credits/>}></Route>
-        <Route path='/community' element={<Community/>}></Route>
-      </Routes>
-    </div>
-    </div>
-    ) : (
-      <div className='bg-gradient-to-b from-[#242124] to-[#000000] flex
-      items-center justify-center h-screen w-screen'>
-        <Login/>
-      </div>
-    )}
-
-    
+      {user ? (
+        <div className="bg-[#F8FAFC] dark:bg-[#0D1117] text-[#0F172A] dark:text-[#E6EDF3] min-h-screen w-screen transition-colors duration-300">
+          <div className="flex h-screen w-screen">
+            <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            <Routes>
+              <Route path="/" element={<ChatBox />} />
+              <Route path="/credits" element={<Credits />} />
+              <Route path="/community" element={<Community />} />
+            </Routes>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-[#F8FAFC] dark:bg-[#0D1117] text-[#0F172A] dark:text-[#E6EDF3] flex items-center justify-center h-screen w-screen transition-colors duration-300">
+          <Routes>
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

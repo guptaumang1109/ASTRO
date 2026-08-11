@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react';
 import { assets } from '../assets/assets'
 import moment from 'moment'
 import Markdown from 'react-markdown'
 import Prism from 'prismjs'
 
 const Message = ({message}) => {
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     Prism.highlightAll()
@@ -14,23 +15,34 @@ const Message = ({message}) => {
     <div>
       {message.role === "user" ? (
         <div className='flex items-start justify-end my-4 gap-2'>
-          <div className='flex flex-col gap-2 p-2 px-4 bg-slate-50 dark:bg-[#57317C]/30 border border-[#80609F]/30 rounded-md max-w-2xl'>
-            <p className='text-sm dark:text-white'>{message.content}</p>
-            <span className='text-xs text-gray-400 dark:text-[#B1A6C0]'>
+          <div className='flex flex-col gap-2 p-3 px-4 bg-white dark:bg-[#161B22] border border-[#E2E8F0] dark:border-[#30363D] rounded-lg max-w-2xl shadow-sm'>
+            <p className='text-sm text-[#0F172A] dark:text-[#E6EDF3]'>{message.content}</p>
+            <span className='text-xs text-[#64748B] dark:text-[#8B949E]'>
               {moment(message.timestamp).fromNow()}</span>
           </div>
           <img src={assets.user_icon} className='w-8 rounded-full' alt="" />
         </div>
       ) : (
         // AI GENERATED CONTENT 
-        <div className='inline-flex flex-col gap-2 p-2 px-4 max-w-2xl bg-primary/20
-        dark:bg-[#57317C]/30 border border-[#80609F]/30 rounded-md my-4'>
+        <div className='inline-flex flex-col gap-2 p-3 px-4 max-w-2xl bg-white dark:bg-[#161B22] border border-[#E2E8F0] dark:border-[#30363D] rounded-lg my-4 shadow-sm shadow-[#06B6D4]/5'>
           {message.isImage ? (
-            <img src={message.content} className='w-full max-w-md mt-2 rounded-md' alt="" />
+            imgError ? (
+              <div className='p-4 my-2 border border-red-500/20 bg-red-500/10 rounded-md text-xs text-red-300 flex flex-col gap-1'>
+                <span className='font-semibold'>Image load failed</span>
+                <span className='text-[#64748B] dark:text-[#8B949E]'>This image link is unavailable or expired.</span>
+              </div>
+            ) : (
+              <img
+                src={message.content}
+                alt="AI Generated"
+                className='w-full max-w-md mt-2 rounded-md object-cover bg-black/20'
+                onError={() => setImgError(true)}
+              />
+            )
           ) : (
-            <div className='text-sm dark:text-white reset-tw font-code'><Markdown>{message.content}</Markdown></div>
+            <div className='text-sm text-[#0F172A] dark:text-[#E6EDF3] reset-tw font-code'><Markdown>{message.content}</Markdown></div>
           )}
-          <span className='text-xs text-gray-400 dark:text-[#B1A6C0]'>{moment(message.timestamp).fromNow()}</span>
+          <span className='text-xs text-[#64748B] dark:text-[#8B949E]'>{moment(message.timestamp).fromNow()}</span>
         </div>
       )
       }
