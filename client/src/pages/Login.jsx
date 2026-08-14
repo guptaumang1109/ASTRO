@@ -88,7 +88,7 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-[#0F172A] dark:text-[#E6EDF3] rounded-2xl shadow-xl border border-[#E2E8F0] dark:border-[#30363D] bg-white dark:bg-[#161B22] transition-colors duration-300">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 m-auto items-start p-6 sm:p-8 py-10 sm:py-12 w-full max-w-[352px] text-[#0F172A] dark:text-[#E6EDF3] rounded-2xl shadow-xl border border-[#E2E8F0] dark:border-[#30363D] bg-white dark:bg-[#161B22] transition-colors duration-300">
       <h1 className="text-[#0F172A] dark:text-[#E6EDF3] text-3xl mt-6 font-semibold">
         {state === "login" ? "Login" : state === "register" ? "Sign up" : "Reset Password"}
       </h1>
